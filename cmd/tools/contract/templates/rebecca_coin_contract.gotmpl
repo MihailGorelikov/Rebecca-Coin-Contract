@@ -1,0 +1,22 @@
+package {{ .PackageName }}
+
+import (
+	"fmt"
+	"strings"
+
+	"github.com/ethereum/go-ethereum/accounts/abi"
+)
+
+const jsonContractABI = `{{ .ContractSource }}`
+
+// GetContractABI returns the ABI of the contract.
+func GetContractABI() (abi.ABI, error) {
+	contractABIReader := strings.NewReader(jsonContractABI)
+
+	contractABI, err := abi.JSON(contractABIReader)
+	if err != nil {
+		return abi.ABI{}, fmt.Errorf("failed to parse contract ABI: %w", err)
+	}
+
+	return contractABI, nil
+}
