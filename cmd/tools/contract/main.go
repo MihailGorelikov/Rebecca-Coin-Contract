@@ -39,9 +39,9 @@ type InputOutput struct {
 
 // TemplateData holds the data to be inserted into the template.
 type TemplateData struct {
-	Filename       string
-	PackageName    string
-	ContractSource string
+	PackageName           string
+	ContractABIJSONSource string
+	TokenName             string
 }
 
 //go:embed templates/*
@@ -65,17 +65,17 @@ func main() {
 	}
 
 	templateData := TemplateData{
-		Filename:       "rebecca_coin_contract.go",
-		PackageName:    "rebecca_coin_contract",
-		ContractSource: string(contractABI),
+		PackageName:           "rebecca_coin_contract",
+		ContractABIJSONSource: string(contractABI),
+		TokenName:             "RebeccaCoin",
 	}
 
-	parsedTemplate, err := template.ParseFS(templates, "templates/rebecca_coin_contract.gotmpl")
+	parsedTemplate, err := template.ParseFS(templates, "templates/token.gotmpl")
 	if err != nil {
 		panicf("failed to parse template: %v", err)
 	}
 
-	file, err := os.Create(templateData.Filename)
+	file, err := os.Create("rebecca_coin_token.go")
 	if err != nil {
 		panicf("failed to create file: %v", err)
 	}
